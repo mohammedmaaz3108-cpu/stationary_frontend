@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { Suspense, useState } from "react";
 import { useSearchParams, useRouter } from "next/navigation";
 import Cookies from "js-cookie";
 import { signUpUser } from "@/lib/Actions/auth/signUpUser";
@@ -8,7 +8,7 @@ import { sendOtp } from "@/lib/Actions/auth/send_otp";
 import { Loader } from "lucide-react";
 import { toast } from "sonner";
 
-export default function VerifyOtpPage() {
+function VerifyOtpContent() {
   const searchParams = useSearchParams();
   const email = searchParams.get("email");
   const router = useRouter();
@@ -19,11 +19,8 @@ export default function VerifyOtpPage() {
   const resendOtp = async () => {
     const details = Cookies.get("user_signup");
     const userDetails = JSON.parse(details);
-    const finalData = {
-      email: userDetails.email,
-    };
-    const response = await sendOtp({ form: finalData });
-    console.log(response);
+    const finalData = { email: userDetails.email };
+    await sendOtp({ form: finalData });
   };
 
   const handleVerify = async (e) => {
@@ -36,18 +33,16 @@ export default function VerifyOtpPage() {
     const finalData = {
       email: userDetails?.email,
       fullName: userDetails?.fullName,
-      otp: otp,
+      otp,
       password: userDetails?.password,
       mobile: "1234567890",
     };
 
     const response = await signUpUser({ form: finalData });
-    console.log(response);
-
     setLoading(false);
 
     if (!response.success) {
-      toast.error(response.message || "Invalid Otp");
+      toast.error(response.message || "Invalid OTP");
       return;
     }
 
@@ -99,5 +94,13 @@ export default function VerifyOtpPage() {
         </p>
       </div>
     </div>
+  );
+}
+
+export default function VerifyOtpPage() {
+  return (
+    <Suspense fallback={<div>Loading...</div>}>
+      <VerifyOtpContent />
+    </Suspense>
   );
 }
