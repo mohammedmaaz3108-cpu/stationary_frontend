@@ -1,5 +1,4 @@
 "use client";
-import { useSearchParams } from "next/navigation";
 
 import { useState } from "react";
 import { useSearchParams, useRouter } from "next/navigation";
@@ -26,11 +25,14 @@ export default function VerifyOtpPage() {
     const response = await sendOtp({ form: finalData });
     console.log(response);
   };
+
   const handleVerify = async (e) => {
     e.preventDefault();
     setLoading(true);
+
     const details = Cookies.get("user_signup");
     const userDetails = JSON.parse(details);
+
     const finalData = {
       email: userDetails?.email,
       fullName: userDetails?.fullName,
@@ -38,8 +40,10 @@ export default function VerifyOtpPage() {
       password: userDetails?.password,
       mobile: "1234567890",
     };
+
     const response = await signUpUser({ form: finalData });
     console.log(response);
+
     setLoading(false);
 
     if (!response.success) {
@@ -48,7 +52,6 @@ export default function VerifyOtpPage() {
     }
 
     toast.success("Otp Verified successfully");
-    console.log(response?.data);
     router.push("/login");
   };
 
@@ -66,7 +69,6 @@ export default function VerifyOtpPage() {
         </p>
 
         <form onSubmit={handleVerify} className="space-y-6">
-          {/* OTP INPUT */}
           <input
             type="text"
             maxLength="6"
