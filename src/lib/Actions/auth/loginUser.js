@@ -1,4 +1,3 @@
-"use server";
 export async function loginUser({ form }) {
   console.log(form);
 
