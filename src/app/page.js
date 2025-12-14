@@ -5,7 +5,7 @@ import Image from "next/image";
 
 export default function HomePage() {
   const brands = [
-    { id: 1, name: "Camlin", image: "/camlin.jpg" },
+    { id: 1, name: "Camlin", image: "/camlin.png" },
     { id: 2, name: "Doms", image: "/doms.jpg" },
     { id: 3, name: "Apsara", image: "/apsara.jpg" },
     { id: 4, name: "Nataraj", image: "/nataraj.jpg" },

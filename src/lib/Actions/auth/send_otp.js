@@ -1,3 +1,5 @@
+"use server";
+
 export async function sendOtp({ form }) {
   console.log(form);
 
